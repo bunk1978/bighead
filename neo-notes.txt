@@ -35,3 +35,9 @@ MERGE (ca)-[r:offering]->(o)
 MERGE (c)-[co:offering]->(o)
 RETURN count(*);
 
+
+#Load full OCR file
+LOAD CSV WITH HEADERS FROM 'file:///full-ocr.csv' as row
+MERGE (f:File {filename: row.fileName,fileContent: row.fileContent})
+
+

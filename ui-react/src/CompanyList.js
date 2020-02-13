@@ -19,6 +19,8 @@ import {
   XYPlot,
   XAxis,
   YAxis,
+  VerticalBarSeries,
+  VertialBarSeriesCanvas,
   HorizontalGridLines,
   LineSeries
 } from "react-vis";
@@ -57,6 +59,8 @@ const GET_COMPANY = gql`
       numberOfferings
       startDate
       endDate
+      offeringDate
+      offeringAmount
     }
   }
 `;
@@ -246,10 +250,13 @@ function CompanyList(props) {
               })}
             </TableBody>
           </Table>
-          <XYPlot width={300} height={300}>
+          <XYPlot xType="ordinal" width={1000} height={500}>
             <HorizontalGridLines />
-            <LineSeries
-              data={[{ x: 1, y: 10 }, { x: 2, y: 5 }, { x: 3, y: 15 }]}
+            <VerticalBarSeries
+              data={data.Company.map(n => ({
+                x: n.offeringDate,
+                y: n.offeringAmount
+              }))}
             />
             <XAxis />
             <YAxis />

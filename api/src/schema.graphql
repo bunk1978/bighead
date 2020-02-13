@@ -4,6 +4,8 @@ type Company {
   numberOfferings: Int @cypher(statement: "MATCH (this)-[co:offering]->(o) RETURN COUNT(o)")
   startDate: String @cypher(statement: "MATCH (this)-[co:offering]->(o) RETURN toString(MIN(o.date))")
   endDate: String @cypher(statement: "MATCH (this)-[co:offering]->(o) RETURN toString(MAX(o.date))")
+  offeringDate: String @cypher(statement: "MATCH (this)-[co:offering]->(o) RETURN toString(o.date)")
+  offeringAmount: Int @cypher(statement: "MATCH (this)-[co:offering]->(o) RETURN toInt(o.amount)")
 }
 
 type Query {
