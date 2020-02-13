@@ -15,7 +15,13 @@ import {
   Typography,
   TextField
 } from "@material-ui/core";
-
+import {
+  XYPlot,
+  XAxis,
+  YAxis,
+  HorizontalGridLines,
+  LineSeries
+} from "react-vis";
 const styles = theme => ({
   root: {
     maxWidth: 1000,
@@ -120,105 +126,135 @@ function CompanyList(props) {
       {loading && !error && <p>Loading...</p>}
       {error && !loading && <p>Error</p>}
       {data && !loading && !error && (
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell
-                key="name"
-                sortDirection={orderBy === "name" ? order : false}
-              >
-                <Tooltip title="Sort" placement="bottom-start" enterDelay={300}>
-                  <TableSortLabel
-                    active={orderBy === "name"}
-                    direction={order}
-                    onClick={() => handleSortRequest("name")}
+        <div>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  key="name"
+                  sortDirection={orderBy === "name" ? order : false}
+                >
+                  <Tooltip
+                    title="Sort"
+                    placement="bottom-start"
+                    enterDelay={300}
                   >
-                    Name
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-              <TableCell
-                key="numberAddresses"
-                sortDirection={orderBy === "numberAddresses" ? order : false}
-              >
-                <Tooltip title="Sort" placement="bottom-start" enterDelay={300}>
-                  <TableSortLabel
-                    active={orderBy === "numberAddresses"}
-                    direction={order}
-                    onClick={() => handleSortRequest("numberAddresses")}
+                    <TableSortLabel
+                      active={orderBy === "name"}
+                      direction={order}
+                      onClick={() => handleSortRequest("name")}
+                    >
+                      Name
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
+                <TableCell
+                  key="numberAddresses"
+                  sortDirection={orderBy === "numberAddresses" ? order : false}
+                >
+                  <Tooltip
+                    title="Sort"
+                    placement="bottom-start"
+                    enterDelay={300}
                   >
-                    Number of Addresses
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-              <TableCell
-                key="numberOfferings"
-                sortDirection={orderBy === "numberOfferings" ? order : false}
-              >
-                <Tooltip title="Sort" placement="bottom-start" enterDelay={300}>
-                  <TableSortLabel
-                    active={orderBy === "numberOfferings"}
-                    direction={order}
-                    onClick={() => handleSortRequest("numberOfferings")}
+                    <TableSortLabel
+                      active={orderBy === "numberAddresses"}
+                      direction={order}
+                      onClick={() => handleSortRequest("numberAddresses")}
+                    >
+                      Number of Addresses
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
+                <TableCell
+                  key="numberOfferings"
+                  sortDirection={orderBy === "numberOfferings" ? order : false}
+                >
+                  <Tooltip
+                    title="Sort"
+                    placement="bottom-start"
+                    enterDelay={300}
                   >
-                    Number of Offerings
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-              <TableCell
-                key="startDate"
-                sortDirection={orderBy === "startDate" ? order : false}
-              >
-                <Tooltip title="Sort" placement="bottom-start" enterDelay={300}>
-                  <TableSortLabel
-                    active={orderBy === "startDate"}
-                    direction={order}
-                    onClick={() => handleSortRequest("startDate")}
+                    <TableSortLabel
+                      active={orderBy === "numberOfferings"}
+                      direction={order}
+                      onClick={() => handleSortRequest("numberOfferings")}
+                    >
+                      Number of Offerings
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
+                <TableCell
+                  key="startDate"
+                  sortDirection={orderBy === "startDate" ? order : false}
+                >
+                  <Tooltip
+                    title="Sort"
+                    placement="bottom-start"
+                    enterDelay={300}
                   >
-                    Start Date
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-              <TableCell
-                key="endDate"
-                sortDirection={orderBy === "endDate" ? order : false}
-              >
-                <Tooltip title="Sort" placement="bottom-start" enterDelay={300}>
-                  <TableSortLabel
-                    active={orderBy === "endDate"}
-                    direction={order}
-                    onClick={() => handleSortRequest("endDate")}
+                    <TableSortLabel
+                      active={orderBy === "startDate"}
+                      direction={order}
+                      onClick={() => handleSortRequest("startDate")}
+                    >
+                      Start Date
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
+                <TableCell
+                  key="endDate"
+                  sortDirection={orderBy === "endDate" ? order : false}
+                >
+                  <Tooltip
+                    title="Sort"
+                    placement="bottom-start"
+                    enterDelay={300}
                   >
-                    End Date
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.Company.map(n => {
-              return (
-                <TableRow key={n.name}>
-                  <TableCell component="th" scope="row">
-                    {n.name}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {n.numberAddresses}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {n.numberOfferings}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {n.startDate}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {n.endDate}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                    <TableSortLabel
+                      active={orderBy === "endDate"}
+                      direction={order}
+                      onClick={() => handleSortRequest("endDate")}
+                    >
+                      End Date
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.Company.map(n => {
+                return (
+                  <TableRow key={n.name}>
+                    <TableCell component="th" scope="row">
+                      {n.name}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {n.numberAddresses}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {n.numberOfferings}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {n.startDate}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {n.endDate}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+          <XYPlot width={300} height={300}>
+            <HorizontalGridLines />
+            <LineSeries
+              data={[{ x: 1, y: 10 }, { x: 2, y: 5 }, { x: 3, y: 15 }]}
+            />
+            <XAxis />
+            <YAxis />
+          </XYPlot>
+        </div>
       )}
     </Paper>
   );
