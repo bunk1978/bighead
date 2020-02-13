@@ -23,7 +23,7 @@ import {
   People as PeopleIcon
 } from "@material-ui/icons";
 
-import UserList from "./UserList";
+import CompanyList from "./CompanyList";
 import classNames from "classnames";
 
 const drawerWidth = 240;
@@ -156,7 +156,7 @@ class App extends Component {
                 noWrap
                 className={classes.title}
               >
-                Welcome To GRANDstack
+                Historical Stock Offerings
               </Typography>
             </Toolbar>
           </AppBar>
@@ -195,11 +195,14 @@ class App extends Component {
                   <ListItemText primary="Businesses" />
                 </ListItem>
 
-                <ListItem button onClick={() => this.setSelectedView("Users")}>
+                <ListItem
+                  button
+                  onClick={() => this.setSelectedView("Companies")}
+                >
                   <ListItemIcon>
                     <PeopleIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Users" />
+                  <ListItemText primary="Companies" />
                 </ListItem>
               </div>
             </List>
@@ -209,9 +212,9 @@ class App extends Component {
 
             {/* FIXME: Use proper routing here instead  */}
             <Typography component="div" className={classes.chartContainer}>
-              {this.state.selectedView === "Home" ? <UserList /> : null}
+              {this.state.selectedView === "Home" ? <CompanyList /> : null}
               {this.state.selectedView === "Businesses" ? <div /> : null}
-              {this.state.selectedView === "Users" ? <UserList /> : null}
+              {this.state.selectedView === "Companies" ? <CompanyList /> : null}
             </Typography>
           </main>
         </div>
