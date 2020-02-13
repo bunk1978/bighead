@@ -1,0 +1,37 @@
+
+#restart
+MATCH (n) DETACH DELETE n;
+
+#example constraint/index
+CREATE CONSTRAINT ON (c:Company) ASSERT c.name IS UNIQUE;
+CREATE INDEX ON c:Company(name);
+
+#load companies
+LOAD CSV WITH HEADERS FROM 'file:///LSC_UFC_SMP_20190726-2.csv' as row
+MERGE (c:Company {name: row.NAM});
+
+#load addresses
+LOAD CSV WITH HEADERS FROM 'file:///LSC_UFC_SMP_20190726-2.csv' as row
+MERGE (c:Company {name: row.NAM})
+MERGE (ca:CompanyAddress {address: row.BRK_ADR_TEL})
+MERGE (c)-[r:address]->(ca);
+
+#Load without clean dates
+LOAD CSV WITH HEADERS FROM 'file:///LSC_UFC_SMP_20190726-2.csv' as row
+MERGE (ca:CompanyAddress {address: row.BRK_ADR_TEL})
+MERGE (c:Company {name: row.NAM})
+CREATE (o:Offering {date: row.DAT, amount: row.AMT, source: row.SRC, type: row.TYP, number: row.NUM, description: row.DSC})
+MERGE (ca)-[r:offering]->(o)
+MERGE (c)-[co:offering]->(o)
+RETURN count(*);
+
+
+#Load with cleaned up dates
+LOAD CSV WITH HEADERS FROM 'file:///LSC_UFC_SMP_20190726-2.csv' as row
+MERGE (ca:CompanyAddress {address: row.BRK_ADR_TEL})
+MERGE (c:Company {name: row.NAM})
+CREATE (o:Offering {date: date(datetime({epochmillis: apoc.date.parse(row.DAT,"ms","dd/mm/yy")-3155760000000})), amount: row.AMT, source: row.SRC, type: row.TYP, number: row.NUM, description: row.DSC})
+MERGE (ca)-[r:offering]->(o)
+MERGE (c)-[co:offering]->(o)
+RETURN count(*);
+
